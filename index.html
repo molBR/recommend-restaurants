@@ -16,6 +16,26 @@
             background-color: #f9f9f9;
         }
 
+        .tags-container {
+            margin-bottom: 20px;
+        }
+
+        .tag-button {
+            padding: 5px 10px;
+            margin: 5px;
+            font-size: 14px;
+            border: 1px solid #000;
+            background: #f0f0f0;
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+
+        .tag-button.selected {
+            background: #000;
+            color: #fff;
+        }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -45,13 +65,21 @@
     </style>
 </head>
 <body>
+    <div class="tags-container">
+        <button class="tag-button" onclick="toggleTag(this)">Mineiro</button>
+        <button class="tag-button" onclick="toggleTag(this)">Árabe</button>
+        <button class="tag-button" onclick="toggleTag(this)">Hambúrguer</button>
+        <button class="tag-button" onclick="toggleTag(this)">Bebida</button>
+        <button class="tag-button" onclick="toggleTag(this)">Italiano</button>
+    </div>
+
     <div>
         <button onclick="recomendarRestaurante()">Me recomenda um restaurante</button>
         <div id="resultado"></div>
     </div>
 
     <footer>
-        Made with ❤️ by Pedro Vallese
+        Made with ❤️ by Pedro Vallese - Coding Giant Codes
     </footer>
 
     <script>
@@ -70,6 +98,10 @@
         ];
 
         const emojisComida = ["🍔", "🍕", "🍣", "🍤", "🍩", "🥗", "🍛", "🥘", "🍦", "🍗", "🌮", "🍿", "🍹", "🍪"];
+
+        function toggleTag(button) {
+            button.classList.toggle('selected');
+        }
 
         function recomendarRestaurante() {
             const indiceRestaurante = Math.floor(Math.random() * restaurantes.length);
