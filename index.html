@@ -66,11 +66,11 @@
 </head>
 <body>
     <div class="tags-container">
-        <button class="tag-button" onclick="toggleTag(this)">A la carte</button>
-        <button class="tag-button" onclick="toggleTag(this)">Self service</button>
-        <button class="tag-button" onclick="toggleTag(this)">Vegano</button>
-        <button class="tag-button" onclick="toggleTag(this)">Preço fixo</button>
-        <button class="tag-button" onclick="toggleTag(this)">Tem sobremesa</button>
+        <button class="tag-button" onclick="toggleTag(this, 'A la carte')">A la carte</button>
+        <button class="tag-button" onclick="toggleTag(this, 'Self service')">Self service</button>
+        <button class="tag-button" onclick="toggleTag(this, 'Vegano')">Vegano</button>
+        <button class="tag-button" onclick="toggleTag(this, 'Preço fixo')">Preço fixo</button>
+        <button class="tag-button" onclick="toggleTag(this, 'Tem sobremesa')">Tem sobremesa</button>
     </div>
 
     <div>
@@ -84,29 +84,53 @@
 
     <script>
         const restaurantes = [
-            "Mineiro magro",
-            "Mineiro gordo",
-            "Verum",
-            "Arabe antigo",
-            "Arabe novo",
-            "Chopp",
-            "Restaurante Itaú",
-            "Hamburguer Jeronimo",
-            "Pecorino (Shopping)",
-            "Coquinha",
-            "Meet"
+            { nome: "Mineiro magro", tags: ["Self service", "Preço fixo"] },
+            { nome: "Mineiro gordo", tags: ["A la carte", "Tem sobremesa"] },
+            { nome: "Verum", tags: ["A la carte", "Vegano"] },
+            { nome: "Arabe antigo", tags: ["A la carte", "Tem sobremesa"] },
+            { nome: "Arabe novo", tags: ["Self service", "Preço fixo"] },
+            { nome: "Chopp", tags: ["A la carte", "Tem sobremesa"] },
+            { nome: "Restaurante Itaú", tags: ["Self service", "Preço fixo"] },
+            { nome: "Hamburguer Jeronimo", tags: ["A la carte"] },
+            { nome: "Pecorino (Shopping)", tags: ["A la carte", "Tem sobremesa"] },
+            { nome: "Coquinha", tags: ["Self service"] },
+            { nome: "Meet", tags: ["A la carte"]},
+            { nome: "Tomate Salada", tags: ["A la carte", "Tem sobremesa"]},
         ];
 
         const emojisComida = ["🍔", "🍕", "🍣", "🍤", "🍩", "🥗", "🍛", "🥘", "🍦", "🍗", "🌮", "🍿", "🍹", "🍪"];
+        const tagsSelecionadas = new Set();
 
-        function toggleTag(button) {
-            button.classList.toggle('selected');
+        function toggleTag(button, tag) {
+            if (tagsSelecionadas.has(tag)) {
+                tagsSelecionadas.delete(tag);
+                button.classList.remove('selected');
+            } else {
+                tagsSelecionadas.add(tag);
+                button.classList.add('selected');
+            }
         }
 
         function recomendarRestaurante() {
-            const indiceRestaurante = Math.floor(Math.random() * restaurantes.length);
-            const restauranteSelecionado = restaurantes[indiceRestaurante];
+            let restaurantesFiltrados = restaurantes;
 
+            // Filtra os restaurantes com base nas tags selecionadas
+            if (tagsSelecionadas.size > 0) {
+                restaurantesFiltrados = restaurantes.filter(restaurante =>
+                    Array.from(tagsSelecionadas).every(tag => restaurante.tags.includes(tag))
+                );
+            }
+
+            if (restaurantesFiltrados.length === 0) {
+                document.getElementById("resultado").textContent = "Nenhum restaurante encontrado para essas tags.";
+                return;
+            }
+
+            // Escolhe um restaurante aleatório da lista filtrada
+            const indiceRestaurante = Math.floor(Math.random() * restaurantesFiltrados.length);
+            const restauranteSelecionado = restaurantesFiltrados[indiceRestaurante].nome;
+
+            // Adiciona um emoji aleatório
             const indiceEmoji = Math.floor(Math.random() * emojisComida.length);
             const emojiAleatorio = emojisComida[indiceEmoji];
 
