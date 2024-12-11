@@ -36,6 +36,17 @@
             color: #fff;
         }
 
+        .tag-label {
+            display: inline-block;
+            background-color: #ff7300;
+            color: #fff;
+            padding: 2px 8px;
+            margin: 2px;
+            font-size: 12px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -52,6 +63,10 @@
 
         #resultado {
             margin-top: 20px;
+            text-align: center;
+        }
+
+        #resultado h3 {
             font-size: 24px;
             font-family: "Times New Roman", Times, serif;
         }
@@ -94,8 +109,7 @@
             { nome: "Hamburguer Jeronimo", tags: ["A la carte"] },
             { nome: "Pecorino (Shopping)", tags: ["A la carte", "Tem sobremesa"] },
             { nome: "Coquinha", tags: ["Self service"] },
-            { nome: "Meet", tags: ["A la carte"]},
-            { nome: "Tomate Salada", tags: ["A la carte", "Tem sobremesa"]},
+            { nome: "Meet", tags: ["A la carte"] }
         ];
 
         const emojisComida = ["🍔", "🍕", "🍣", "🍤", "🍩", "🥗", "🍛", "🥘", "🍦", "🍗", "🌮", "🍿", "🍹", "🍪"];
@@ -121,20 +135,28 @@
                 );
             }
 
+            const resultadoDiv = document.getElementById("resultado");
+            resultadoDiv.innerHTML = ""; // Limpa o resultado anterior
+
             if (restaurantesFiltrados.length === 0) {
-                document.getElementById("resultado").textContent = "Nenhum restaurante encontrado para essas tags.";
+                resultadoDiv.innerHTML = `<h3>😢 Não temos restaurantes de acordo com seus filtros.</h3>`;
                 return;
             }
 
             // Escolhe um restaurante aleatório da lista filtrada
             const indiceRestaurante = Math.floor(Math.random() * restaurantesFiltrados.length);
-            const restauranteSelecionado = restaurantesFiltrados[indiceRestaurante].nome;
+            const restauranteSelecionado = restaurantesFiltrados[indiceRestaurante];
 
             // Adiciona um emoji aleatório
             const indiceEmoji = Math.floor(Math.random() * emojisComida.length);
             const emojiAleatorio = emojisComida[indiceEmoji];
 
-            document.getElementById("resultado").textContent = `${restauranteSelecionado} ${emojiAleatorio}`;
+            // Exibe o restaurante e suas tags
+            const tagsHTML = restauranteSelecionado.tags.map(tag => `<span class="tag-label">${tag}</span>`).join(" ");
+            resultadoDiv.innerHTML = `
+                <h3>${restauranteSelecionado.nome} ${emojiAleatorio}</h3>
+                <div>${tagsHTML}</div>
+            `;
         }
     </script>
 </body>
