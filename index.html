@@ -114,6 +114,7 @@
 
         const emojisComida = ["🍔", "🍕", "🍣", "🍤", "🍩", "🥗", "🍛", "🥘", "🍦", "🍗", "🌮", "🍿", "🍹", "🍪"];
         const tagsSelecionadas = new Set();
+        let ultimoRestaurante = null;
 
         function toggleTag(button, tag) {
             if (tagsSelecionadas.has(tag)) {
@@ -143,9 +144,20 @@
                 return;
             }
 
+            // Remove o último restaurante selecionado para evitar repetição consecutiva
+            restaurantesFiltrados = restaurantesFiltrados.filter(r => r.nome !== ultimoRestaurante);
+
+            if (restaurantesFiltrados.length === 0) {
+                resultadoDiv.innerHTML = `<h3>😢 Não temos mais restaurantes diferentes para esses filtros.</h3>`;
+                return;
+            }
+
             // Escolhe um restaurante aleatório da lista filtrada
             const indiceRestaurante = Math.floor(Math.random() * restaurantesFiltrados.length);
             const restauranteSelecionado = restaurantesFiltrados[indiceRestaurante];
+
+            // Atualiza o último restaurante
+            ultimoRestaurante = restauranteSelecionado.nome;
 
             // Adiciona um emoji aleatório
             const indiceEmoji = Math.floor(Math.random() * emojisComida.length);
