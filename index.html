@@ -144,12 +144,9 @@
                 return;
             }
 
-            // Remove o último restaurante selecionado para evitar repetição consecutiva
-            restaurantesFiltrados = restaurantesFiltrados.filter(r => r.nome !== ultimoRestaurante);
-
-            if (restaurantesFiltrados.length === 0) {
-                resultadoDiv.innerHTML = `<h3>😢 Não temos mais restaurantes diferentes para esses filtros.</h3>`;
-                return;
+            // Remove o último restaurante recomendado, se houver mais de uma opção
+            if (restaurantesFiltrados.length > 1) {
+                restaurantesFiltrados = restaurantesFiltrados.filter(r => r.nome !== ultimoRestaurante);
             }
 
             // Escolhe um restaurante aleatório da lista filtrada
